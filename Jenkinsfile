@@ -8,7 +8,7 @@ pipeline{
             steps{
                 git 'git@github.com:sakina14/Sonar-Project.git'
             }
-         }        
+                 
        stage('Package'){
             steps{
                 sh 'mvn clean package'
@@ -19,6 +19,7 @@ pipeline{
          }
          }
          }
+       }
         stage('SonarQube analysis') {
 //    def scannerHome = tool 'SonarScanner 4.0';
         steps{
@@ -55,4 +56,4 @@ pipeline{
    }
 }    
 }
-}
+

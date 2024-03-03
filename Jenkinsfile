@@ -15,8 +15,8 @@ pipeline{
                 sh 'mvn clean package'
             }
            post {
-               success {
-                 junit 'target/surefire-reports/**/*.xml'
+               always {
+                 junit '***/target/surefire-reports/TEST-*.xml'
          }
          }
          }

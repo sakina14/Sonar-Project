@@ -6,13 +6,18 @@ pipeline{
     stages{
        stage('Checkout'){
             steps{
-                git 'git@github.com:NagiReddyDEVOPS/Sonar-Project.git'
+                git 'git@github.com:sakina14/Sonar-Project.git'
             }
          }        
        stage('Package'){
             steps{
                 sh 'mvn clean package'
             }
+           post {
+               success {
+                 junit 'target/surefire-reports/**/*.xml'
+         }
+         }
          }
         stage('SonarQube analysis') {
 //    def scannerHome = tool 'SonarScanner 4.0';
@@ -20,7 +25,7 @@ pipeline{
         withSonarQubeEnv('SonarQube') { 
         // If you have configured more than one global server connection, you can specify its name
 //      sh "${scannerHome}/bin/sonar-scanner"
-        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-project -Dsonar.host.url=http://65.0.80.243:9000 -Dsonar.login=sqp_f6e4e2ee42d66322c69ce90082b181c7d54406da"
+        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-project -Dsonar.host.url=http://65.0.182.238:9000/ -Dsonar.login=sqp_428ed6568f65838de3f5c5c7417813cc9e52f40f"
     }
         }
         }
@@ -30,11 +35,11 @@ pipeline{
       nexusArtifactUploader(
       nexusVersion: 'nexus3',
       protocol: 'http',
-      nexusUrl: '13.126.31.192:8081',
+      nexusUrl: '15.206.170.231:8081',
       groupId: 'myGroupId',
       version: '1.0-SNAPSHOT',
       repository: 'maven-snapshots',
-      credentialsId: 'nexuscredentails',
+      credentialsId: 'nexuscred',
       artifacts: [
       [artifactId: 'maven-project',
       classifier: '',
@@ -45,7 +50,7 @@ pipeline{
         }
         stage ('Deploy to Prod'){
      steps {
-        sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@13.201.186.114:/opt/apache-tomcat-8.0.52/webapps'
+        sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@13.233.133.5:/opt/apache-tomcat-8.0.52/webapps'
            }
    }
 }    
